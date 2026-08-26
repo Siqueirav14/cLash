@@ -1,0 +1,308 @@
+/* ============================================
+   RESET & BASE — Mobile-first, sem comportamentos
+   nativos que atrapalhem o jogo
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0d14;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    touch-action: none;          /* evita zoom/scroll acidental */
+    overscroll-behavior: none;
+    position: fixed;
+    inset: 0;
+}
+
+#game-root {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* ============================================
+   TELAS
+   ============================================ */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* ============================================
+   MENU PRINCIPAL
+   ============================================ */
+#main-menu {
+    background: radial-gradient(circle at 50% 30%, #2a3158 0%, #0b0d14 70%);
+    justify-content: center;
+    align-items: center;
+}
+.menu-content { text-align: center; padding: 20px; }
+.game-title {
+    font-size: clamp(36px, 10vw, 64px);
+    letter-spacing: 4px;
+    background: linear-gradient(180deg, #ffd86b 0%, #ff8a3d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 20px rgba(255, 160, 60, 0.3);
+    margin-bottom: 8px;
+}
+.subtitle {
+    color: #9aa3c7;
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+.btn-primary {
+    background: linear-gradient(180deg, #ffb347 0%, #ff7a3d 100%);
+    color: #2a1400;
+    border: none;
+    padding: 16px 48px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #a04020, 0 10px 20px rgba(0,0,0,0.4);
+    transition: transform 0.08s;
+}
+.btn-primary:active { transform: translateY(3px); box-shadow: 0 3px 0 #a04020; }
+.menu-note {
+    margin-top: 30px;
+    color: #6b7399;
+    line-height: 1.6;
+}
+
+/* ============================================
+   TELA DE BATALHA
+   ============================================ */
+#battle-screen {
+    background: #0b0d14;
+}
+
+/* HUD topo */
+#hud-top {
+    flex: 0 0 auto;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: linear-gradient(180deg, #1a1f35 0%, #0f1324 100%);
+    border-bottom: 2px solid #2a3158;
+    z-index: 10;
+}
+.hud-block { display: flex; align-items: center; gap: 8px; }
+.hud-block.center { flex-direction: column; gap: 0; }
+#phase-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #9aa3c7;
+}
+#timer {
+    font-size: 22px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #ffd86b;
+}
+.tower-count {
+    font-size: 20px;
+    font-weight: 800;
+    color: #6be38a;
+    background: #1a2a20;
+    padding: 4px 10px;
+    border-radius: 8px;
+    min-width: 32px;
+    text-align: center;
+}
+.enemy-side .tower-count { color: #ff6b6b; background: #2a1a1a; }
+.side-label { font-size: 11px; color: #9aa3c7; letter-spacing: 1px; }
+
+/* Container do Phaser — ocupa todo o espaço central */
+#game-container {
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+    background: #1a2438;
+}
+#game-container canvas { display: block; }
+
+/* HUD inferior */
+#hud-bottom {
+    flex: 0 0 auto;
+    padding: 8px 10px 12px;
+    background: linear-gradient(180deg, #0f1324 0%, #1a1f35 100%);
+    border-top: 2px solid #2a3158;
+    z-index: 10;
+}
+
+/* Barra de elixir */
+#elixir-bar {
+    position: relative;
+    height: 26px;
+    background: #1a0f2a;
+    border: 2px solid #4a2a7a;
+    border-radius: 13px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+#elixir-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 50%;
+    background: linear-gradient(90deg, #b84dff 0%, #ff4dd8 100%);
+    transition: width 0.15s linear;
+}
+#elixir-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    font-variant-numeric: tabular-nums;
+}
+#elixir-multiplier {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 800;
+    color: #ffd86b;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 8px;
+}
+
+/* Mão de cartas */
+#hand-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+.card {
+    position: relative;
+    aspect-ratio: 3/4;
+    background: linear-gradient(180deg, #2a3158 0%, #1a1f35 100%);
+    border: 2px solid #4a5288;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 4px;
+    cursor: pointer;
+    transition: transform 0.1s, border-color 0.15s, opacity 0.2s;
+    overflow: hidden;
+}
+.card:active { transform: scale(0.96); }
+.card.disabled {
+    opacity: 0.45;
+    filter: grayscale(0.6);
+    cursor: not-allowed;
+}
+.card.selected {
+    border-color: #ffd86b;
+    box-shadow: 0 0 0 2px #ffd86b, 0 0 20px rgba(255, 216, 107, 0.5);
+    transform: translateY(-4px);
+}
+.card-icon {
+    font-size: clamp(22px, 6vw, 32px);
+    line-height: 1;
+}
+.card-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    line-height: 1.1;
+}
+.card-cost {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(180deg, #b84dff 0%, #7a2ab8 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    border: 1.5px solid #fff;
+}
+
+/* Overlay de posicionamento */
+#placement-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+#placement-overlay.active { pointer-events: auto; }
+
+/* Tela de resultado */
+#match-result {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.result-box {
+    background: linear-gradient(180deg, #2a3158 0%, #1a1f35 100%);
+    padding: 30px 40px;
+    border-radius: 16px;
+    border: 2px solid #4a5288;
+    text-align: center;
+    min-width: 260px;
+}
+#result-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+#result-title.win { color: #6be38a; }
+#result-title.lose { color: #ff6b6b; }
+#result-title.draw { color: #ffd86b; }
+#result-reason {
+    color: #9aa3c7;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Utilitários */
+.hidden { display: none !important; }
+
+/* Responsividade — desktop mantém proporção mobile */
+@media (min-width: 768px) {
+    #battle-screen {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 2px solid #2a3158;
+        border-right: 2px solid #2a3158;
+    }
+}
