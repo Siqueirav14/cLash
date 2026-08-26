@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Arena Clash</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-root">
+        <!-- Menu inicial (stub — será expandido na etapa de login/perfil) -->
+        <div id="main-menu" class="screen active">
+            <div class="menu-content">
+                <h1 class="game-title">ARENA CLASH</h1>
+                <p class="subtitle">Batalha Estratégica</p>
+                <button id="btn-play" class="btn-primary">JOGAR</button>
+                <div class="menu-note">
+                    <small>Modo: Jogador vs IA</small><br>
+                    <small>Online, login e coleção em breve</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de batalha -->
+        <div id="battle-screen" class="screen">
+            <!-- HUD superior (cronômetro e placar) -->
+            <div id="hud-top">
+                <div class="hud-block player-side">
+                    <span class="tower-count" id="player-tower-count">3</span>
+                    <span class="side-label">VOCÊ</span>
+                </div>
+                <div class="hud-block center">
+                    <div id="phase-label">NORMAL</div>
+                    <div id="timer">03:00</div>
+                </div>
+                <div class="hud-block enemy-side">
+                    <span class="side-label">IA</span>
+                    <span class="tower-count" id="enemy-tower-count">3</span>
+                </div>
+            </div>
+
+            <!-- Container do Phaser -->
+            <div id="game-container"></div>
+
+            <!-- HUD inferior (elixir + cartas) -->
+            <div id="hud-bottom">
+                <div id="elixir-bar">
+                    <div id="elixir-fill"></div>
+                    <div id="elixir-text">0/10</div>
+                    <div id="elixir-multiplier">1x</div>
+                </div>
+                <div id="hand-container">
+                    <!-- 4 cartas injetadas via JS -->
+                </div>
+            </div>
+
+            <!-- Overlay de placement (mostra área válida quando uma carta está selecionada) -->
+            <div id="placement-overlay" class="hidden"></div>
+
+            <!-- Tela de fim de partida -->
+            <div id="match-result" class="hidden">
+                <div class="result-box">
+                    <h2 id="result-title">VITÓRIA</h2>
+                    <p id="result-reason"></p>
+                    <button id="btn-back-menu" class="btn-primary">MENU</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phaser 3 via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.min.js"></script>
+
+    <!-- Módulos do jogo -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
